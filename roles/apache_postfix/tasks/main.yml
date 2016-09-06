@@ -10,6 +10,7 @@
              AllowOverride None
              Require all granted
            </Directory>
+
 - name: Remove the default www settings
   blockinfile:
     dest: /etc/apache2/apache2.conf
@@ -20,6 +21,7 @@
         AllowOverride None
         Require all granted
       </Directory>
+
 - name: Install apache modules
   apache2_module:
     state: present

@@ -5,8 +5,29 @@
 - name: Copy file to /etc/php5/conf.d/mysql.ini
   copy: src=files/mysql.ini dest=/etc/php5/conf.d/mysql.ini
 
-- name: Copy file to /etc/apache2/sites-available/nextcloud.conf
-  copy: src=files/nextcloud.conf dest=/etc/apache2/sites-available/nextcloud.conf
+- name: Make /etc/apache2/sites-available/nextcloud.conf
+  file: path=/etc/apache2/sites-available/nextcloud.conf state=touch owner=root group=root mode=0755
+
+- name: Modify nextcloud.conf
+  blockinfile:
+    dest: /etc/apache2/sites-available/nextcloud.conf
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+Alias /nextcloud "/{{nc_root}}/{{nc_path}}/{{nc_dest}}"
+
+<Directory /{{nc_root}}/{{nc_path}}/{{nc_dest}}>
+  Options +Indexes +FollowSymlinks +ExecCGI
+  AllowOverride All
+  Require all granted
+  Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
+ <IfModule mod_dav.c>
+  Dav off
+ </IfModule>
+
+ SetEnv HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
+ SetEnv HTTP_HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
+
+</Directory>
 
 - name: Create symbolic link to nextcloud.conf
   file: src=/etc/apache2/sites-available/nextcloud.conf dest=/etc/apache2/sites-enabled/nextcloud.conf state=link
@@ -44,6 +65,3 @@
 
 - name: Modify .htaccess permissions two
   shell: if [ -f /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess ]; then chmod 0664 /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; chown root:{{ htgroup }} /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; fi
-
-- name: Modify default-ssl.conf
-  lineinfile: "dest=/etc/apache2/sites-available/nextcloud.conf regexp='THISPATH' line='/{{nc_root}}/{{nc_path}}/{{nc_dest}}'"
