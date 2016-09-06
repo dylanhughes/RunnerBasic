@@ -1,9 +1,9 @@
-name: OwnCloud Product
+name: nextcloud Product
 description: Access & share your files, calendars, contacts, mail & more from any device, on your terms
-shortDescription: OwnCloud is your own personal cloud
-imagePath: https://owncloud.org/wp-content/themes/owncloudorgnew/assets/img/common/logo_owncloud.svg
+shortDescription: nextcloud is your own personal cloud
+imagePath: https://nextcloud.com/wp-content/themes/next/assets/img/common/nextcloud-square-logo.png?4cb134
 version: 0.0.1
-updateDate: June 29, 2016
+updateDate: Sept 6th, 2016
 public: false
 
 # Allow for single panel fact collection.
