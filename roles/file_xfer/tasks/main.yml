@@ -5,7 +5,7 @@
 - name: Copy file to /etc/php5/conf.d/mysql.ini
   copy: src=files/mysql.ini dest=/etc/php5/conf.d/mysql.ini
 
-- name: Copy file to /etc/apache2/sites-available/owncloud.conf
+- name: Copy file to /etc/apache2/sites-available/nextcloud.conf
   copy: src=files/nextcloud.conf dest=/etc/apache2/sites-available/nextcloud.conf
 
 - name: Create symbolic link to nextcloud.conf
@@ -19,10 +19,12 @@
     - updater
 
 - name: Modify file and directory modes one
-  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type f -print0 | xargs -0 chmod 0755
+  command: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type f -exec chmod -c 0755 {} \;
+  ignore_errors: yes
 
 - name: Modify file and directory modes two
-  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type d -print0 | xargs -0 chmod 0755
+  command: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type d -exec chmod -c 0755 {} \;
+  ignore_errors: yes
 
 - name: Modify permissions on ocpath
   file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}} state=directory owner=root group={{ htgroup }}

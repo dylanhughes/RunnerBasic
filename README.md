@@ -5,7 +5,7 @@ Create a nextcloud server in CLC cloud
 * datacenter # ex: GB3
 * nextcloud_root # ex: data_nc
 * nextcloud_path # ex: www
-* nextcloud_dest # ex: owncloud
+* nextcloud_dest # ex: nextcloud
 * nextcloud_version # ex: 10.0.0
 * ht_user # ex: www-data
 * ht_group # ex: www-data
@@ -45,7 +45,7 @@ $CONFIG = array (
     0 => 'PRIVATEIPADDRESS',
     1 => 'PUBLICIPADDRESS',
   ),
-  'datadirectory' => '/data_oc/www/owncloud/data',
+  'datadirectory' => '/data_oc/www/nextcloud/data',
   'overwrite.cli.url' => 'https://IPADDRESS/nextcloud',
   'dbtype' => 'mysql',
   'version' => '9.0.2.2',
