@@ -2,6 +2,7 @@
 Create a nextcloud server in CLC cloud
 
 ## Parameters
+The root, path and dest variables are designed to make up the path, like if you're installing in /var/www/nextcloud then these should be var, www & nextcloud. Splitting them up in this way made the ansible a bit easier.
 * datacenter # ex: GB3
 * nextcloud_root # ex: data_nc
 * nextcloud_path # ex: www
@@ -21,8 +22,9 @@ The high level tasks are as follows:
 * configure apache and postfix
 
 ### NOTES:
-Because nextcloud is a sort of private dropbox it's probable that a disk (partition) will need to be added to the instance to serve as storage, to do this I would move /data_nc to a temporary location, add a 'partition' mounted to /data_nc then move the contents of the original /data_nc into your new partition.
 Once the play is successful, hit the private IP at http://aa.bb.cc.dd/nextcloud
+
+Because nextcloud is a sort of private dropbox it's probable that a disk (partition) will need to be added to the instance to serve as storage, to do this I would move /data_nc to a temporary location, add a 'partition' mounted to /data_nc then move the contents of the original /data_nc into your new partition.
 
 ### PREREQUISITES
 You must have a CenturyLink Cloud account to be able to use Runner

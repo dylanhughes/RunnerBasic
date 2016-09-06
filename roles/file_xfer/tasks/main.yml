@@ -47,10 +47,10 @@
   shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type d -print0 | xargs -0 chmod 0755
   ignore_errors: yes
 
-- name: Modify permissions on ocpath
+- name: Modify permissions on nc_dest
   file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}} state=directory owner=root group={{ htgroup }}
 
-- name: Modify permissions on ocpath subdirs
+- name: Modify permissions on nc_dest subdirs
   file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
   with_items:
     - apps
@@ -61,7 +61,10 @@
   shell: chmod +x /{{nc_root}}/{{nc_path}}/{{nc_dest}}/occ
 
 - name: Modify .htaccess permissions one
-  shell: if [ -f /{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess ]; then chmod 0644 /{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess; chown root:{{ htgroup }} /{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess; fi
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess state=touch mode=0644
 
 - name: Modify .htaccess permissions two
-  shell: if [ -f /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess ]; then chmod 0664 /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; chown root:{{ htgroup }} /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; fi
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess state=touch mode=0664
+
+- name: Modify .user.ini permissions to allow file size limit to be changed
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/.user.ini state=touch owner=root group={{ htgroup }} mode=0775
