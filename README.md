@@ -2,7 +2,7 @@
 Create a nextcloud server in CLC cloud
 
 ## Parameters
-The root, path and dest variables are designed to make up the path, like if you're installing in /var/www/nextcloud then these should be var, www & nextcloud. Splitting them up in this way made the ansible a bit easier.
+The root, path and dest variables are designed to make up the path, like if you're installing in /var/www/nextcloud then these should be var, www & nextcloud. Splitting them up in this way made some sections of the ansible play a bit easier.
 * datacenter # ex: GB3
 * nextcloud_root # ex: data_nc
 * nextcloud_path # ex: www
@@ -65,6 +65,14 @@ $CONFIG = array (
   'mail_smtpauthtype' => 'PLAIN',
   'mail_smtpauth' => 1,
   'mail_domain' => 'clctest.com',
-  'memcache.local' => '\OC\Memcache\APCu',
+  'memcache.local' => '\\OC\\Memcache\\APCu',
+  'memcache.locking' => '\\OC\\Memcache\\Redis',
+  'redis' =>
+  array (
+    'host' => 'localhost',
+    'port' => 6379,
+  ),
+  'maintenance' => false,
+  'loglevel' => 2,
 );
 ```
