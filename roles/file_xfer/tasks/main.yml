@@ -8,7 +8,7 @@
 - name: Copy file to /etc/apache2/sites-available/owncloud.conf
   copy: src=files/nextcloud.conf dest=/etc/apache2/sites-available/nextcloud.conf
 
-- name: Create symbolic link to owncloud.conf
+- name: Create symbolic link to nextcloud.conf
   file: src=/etc/apache2/sites-available/nextcloud.conf dest=/etc/apache2/sites-enabled/nextcloud.conf state=link
 
 - name: Creates directories
@@ -44,4 +44,4 @@
   shell: if [ -f /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess ]; then chmod 0664 /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; chown root:{{ htgroup }} /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; fi
 
 - name: Modify default-ssl.conf
-  lineinfile: dest=/etc/apache2/sites-available/nextcloud.conf regexp='THISPATH' line='/{{nc_root}}/{{nc_path}}/{{nc_dest}}'
+  lineinfile: "dest=/etc/apache2/sites-available/nextcloud.conf regexp='THISPATH' line='/{{nc_root}}/{{nc_path}}/{{nc_dest}}'"

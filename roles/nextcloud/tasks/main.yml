@@ -5,7 +5,7 @@
 - name: Create directories
   file: path=/{{nc_root}}/{{nc_path}} state=directory mode=0755
 
-- name: Download owncloud tarball
+- name: Download nextcloud tarball
   get_url: url=https://download.nextcloud.com/server/releases/nextcloud-{{nc_ver}}.tar.bz2 dest=/{{nc_root}}/nextcloud-{{nc_ver}}.tar.bz2 validate_certs=no
 
 - name: Run only if it hasn't been done already

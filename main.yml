@@ -30,7 +30,7 @@
   roles:
     - role: nextcloud
       tags:
-        - owncloud
+        - nextcloud
 
 - name: Copy mysql.ini and owncloud.conf files over
   hosts: nc_servers

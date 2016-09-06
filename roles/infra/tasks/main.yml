@@ -1,5 +1,5 @@
 ---
-- name: create owncloud Group
+- name: create nextcloud Group
   clc_group:
     location: "{{ datacenter }}"
     name: nextcloud
