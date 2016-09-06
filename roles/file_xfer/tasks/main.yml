@@ -6,39 +6,42 @@
   copy: src=files/mysql.ini dest=/etc/php5/conf.d/mysql.ini
 
 - name: Copy file to /etc/apache2/sites-available/owncloud.conf
-  copy: src=files/owncloud.conf dest=/etc/apache2/sites-available/owncloud.conf
+  copy: src=files/nextcloud.conf dest=/etc/apache2/sites-available/nextcloud.conf
 
 - name: Create symbolic link to owncloud.conf
-  file: src=/etc/apache2/sites-available/owncloud.conf dest=/etc/apache2/sites-enabled/owncloud.conf state=link
+  file: src=/etc/apache2/sites-available/nextcloud.conf dest=/etc/apache2/sites-enabled/nextcloud.conf state=link
 
 - name: Creates directories
-  file: path={{owncloud_path}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
   with_items:
     - data
     - assets
     - updater
 
 - name: Modify file and directory modes one
-  shell: find {{owncloud_path}} -type f -print0 | xargs -0 chmod 0755
+  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type f -print0 | xargs -0 chmod 0755
 
 - name: Modify file and directory modes two
-  shell: find {{owncloud_path}} -type d -print0 | xargs -0 chmod 0755
+  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type d -print0 | xargs -0 chmod 0755
 
 - name: Modify permissions on ocpath
-  file: path={{owncloud_path}} state=directory owner=root group={{ htgroup }}
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}} state=directory owner=root group={{ htgroup }}
 
 - name: Modify permissions on ocpath subdirs
-  file: path={{owncloud_path}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
   with_items:
     - apps
     - config
     - themes
 
 - name: Grant executer priviledges
-  shell: chmod +x {{owncloud_path}}/occ
+  shell: chmod +x /{{nc_root}}/{{nc_path}}/{{nc_dest}}/occ
 
 - name: Modify .htaccess permissions one
-  shell: if [ -f {{ owncloud_path }}/.htaccess ]; then chmod 0644 {{ owncloud_path }}/.htaccess; chown root:{{ htgroup }} {{ owncloud_path }}/.htaccess; fi
+  shell: if [ -f /{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess ]; then chmod 0644 /{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess; chown root:{{ htgroup }} /{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess; fi
 
 - name: Modify .htaccess permissions two
-  shell: if [ -f {{ owncloud_path }}/data/.htaccess ]; then chmod 0664 {{ owncloud_path }}/data/.htaccess; chown root:{{ htgroup }} {{ owncloud_path }}/data/.htaccess; fi
+  shell: if [ -f /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess ]; then chmod 0664 /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; chown root:{{ htgroup }} /{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess; fi
+
+- name: Modify default-ssl.conf
+  lineinfile: dest=/etc/apache2/sites-available/nextcloud.conf regexp='THISPATH' line='/{{nc_root}}/{{nc_path}}/{{nc_dest}}'

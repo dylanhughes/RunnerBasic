@@ -9,7 +9,7 @@
         - clc
 
 - name: Install and configure MySQL
-  hosts: oc_servers
+  hosts: nc_servers
   gather_facts: True
   roles:
     - role: mysql
@@ -17,23 +17,23 @@
         - db
 
 - name: Get additional packages
-  hosts: oc_servers
+  hosts: nc_servers
   gather_facts: True
   roles:
     - role: packages
       tags:
         - pkg
 
-- name: Install Owncloud
-  hosts: oc_servers
+- name: Install nextcloud
+  hosts: nc_servers
   gather_facts: False
   roles:
-    - role: owncloud
+    - role: nextcloud
       tags:
         - owncloud
 
 - name: Copy mysql.ini and owncloud.conf files over
-  hosts: oc_servers
+  hosts: nc_servers
   gather_facts: False
   roles:
     - role: file_xfer
@@ -41,7 +41,7 @@
         - config
 
 - name: Configure apache and postfix
-  hosts: oc_servers
+  hosts: nc_servers
   gather_facts: False
   roles:
     - role: apache_postfix
@@ -49,7 +49,7 @@
         - appost
 
 - name: Install and Enable Redis PHP module
-  hosts: oc_servers
+  hosts: nc_servers
   gather_facts: False
   roles:
     - role: redis

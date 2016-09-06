@@ -2,7 +2,7 @@
 - name: create owncloud Group
   clc_group:
     location: "{{ datacenter }}"
-    name: owncloud
+    name: nextcloud
     state: present
   register: clc_grp
 
@@ -18,11 +18,11 @@
 
 - name: create a single server
   clc_server:
-    name: ocld
+    name: ncld
     template: ubuntu-14-64
     count: 1
-    count_group: owncloud
-    group: owncloud
+    count_group: nextcloud
+    group: nextcloud
     location: "{{ datacenter }}"
     password: "{{ serverpass.stdout }}"
     cpu: 4
@@ -50,4 +50,4 @@
   debug: var=clcip
 
 - name: Add the new server to the inventory
-  add_host: name={{clc_svr.servers[0].name}}  groups=oc_servers ansible_ssh_pass={{ serverpass.stdout }} ansible_ssh_host={{clc_svr.servers[0].ipaddress}} ansible_ssh_user=root ansible_host_key_checking=false
+  add_host: name={{clc_svr.servers[0].name}}  groups=nc_servers ansible_ssh_pass={{ serverpass.stdout }} ansible_ssh_host={{clc_svr.servers[0].ipaddress}} ansible_ssh_user=root ansible_host_key_checking=false

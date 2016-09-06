@@ -31,7 +31,7 @@
       [client]
       user=root
       password="{{ mysqlpass }}"
-      
+
 - name: Deletes anonymous MySQL server user for host
   mysql_user: user="" state="absent"
 
@@ -42,5 +42,5 @@
   mysql_db: name=test state=absent
 
 - name: Create an owncloud database
-  mysql_db: name=owncloud state=present
+  mysql_db: name=nextcloud state=present
   notify: Restart MySQL
