@@ -19,11 +19,11 @@
     - updater
 
 - name: Modify file and directory modes one
-  command: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type f -exec chmod -c 0755 {} \;
+  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type f -print0 | xargs -0 chmod 0755
   ignore_errors: yes
 
 - name: Modify file and directory modes two
-  command: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type d -exec chmod -c 0755 {} \;
+  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type d -print0 | xargs -0 chmod 0755
   ignore_errors: yes
 
 - name: Modify permissions on ocpath
