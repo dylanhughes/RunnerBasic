@@ -1,0 +1,57 @@
+---
+- name: Create infrastructure
+  hosts: all
+  gather_facts: False
+  connection: local
+  roles:
+    - role: infra
+      tags:
+        - clc
+
+- name: Install and configure MySQL
+  hosts: oc_servers
+  gather_facts: True
+  roles:
+    - role: mysql
+      tags:
+        - db
+
+- name: Get additional packages
+  hosts: oc_servers
+  gather_facts: True
+  roles:
+    - role: packages
+      tags:
+        - pkg
+
+- name: Install Owncloud
+  hosts: oc_servers
+  gather_facts: False
+  roles:
+    - role: owncloud
+      tags:
+        - owncloud
+
+- name: Copy mysql.ini and owncloud.conf files over
+  hosts: oc_servers
+  gather_facts: False
+  roles:
+    - role: file_xfer
+      tags:
+        - config
+
+- name: Configure apache and postfix
+  hosts: oc_servers
+  gather_facts: False
+  roles:
+    - role: apache_postfix
+      tags:
+        - appost
+
+- name: Install and Enable Redis PHP module
+  hosts: oc_servers
+  gather_facts: False
+  roles:
+    - role: redis
+      tags:
+        - redistag

@@ -1,0 +1,32 @@
+---
+- name: Create directories
+  file: path=/data_oc state=directory mode=0755
+
+- name: Create directories
+  file: path=/data_oc/www state=directory mode=0755
+
+- name: Download owncloud tarball
+  get_url: url=https://download.owncloud.org/community/owncloud-9.0.2.tar.bz2 dest=/data_oc/owncloud-9.0.2.tar.bz2 validate_certs=no checksum=md5:a0131f5cae2b1503b8de6796487c1bdc
+
+- name: Run only if it hasn't been done already
+  stat: path=/data_oc/www/owncloud
+  register: st
+
+- name: Extract the Tarball
+  shell: tar -xjf owncloud-9.0.2.tar.bz2
+  args:
+    chdir: "/data_oc"
+  when: not st.stat.exists
+
+- name: Copy data to wwwroot
+  shell: cp -r /data_oc/owncloud /data_oc/www/
+  when: not st.stat.exists
+
+- name: Remove Documents default user folder
+  file: path=/data_oc/www/owncloud/core/skeleton/Documents state=absent
+
+- name: Remove Photos default user folder
+  file: path=/data_oc/www/owncloud/core/skeleton/Photos state=absent
+
+- name: Remove install directory
+  file: path=/data_oc/owncloud state=absent

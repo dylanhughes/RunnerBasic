@@ -1,0 +1,53 @@
+---
+- name: create owncloud Group
+  clc_group:
+    location: "{{ datacenter }}"
+    name: owncloud
+    state: present
+  register: clc_grp
+
+- debug: var=clc_grp
+
+- debug: msg="Group Name is {{ clc_grp.group.name }}"
+
+- name: Generate password for server
+  command: openssl rand -base64 15
+  register: serverpass
+  changed_when: false
+
+
+- name: create a single server
+  clc_server:
+    name: ocld
+    template: ubuntu-14-64
+    count: 1
+    count_group: owncloud
+    group: owncloud
+    location: "{{ datacenter }}"
+    password: "{{ serverpass.stdout }}"
+    cpu: 4
+    memory: 8
+  register: clc_svr
+
+
+- debug: var=clc_svr
+
+- name: Wait for SSH to Come up on Server
+  wait_for: host={{ clc_svr.servers[0].ipaddress }} port=22 delay=5 timeout=320 state=started
+
+- name: Create Public IP For Server
+  clc_publicip:
+    protocol: 'TCP'
+    ports:
+      - 80
+      - 443
+    server_ids:
+      - "{{ clc_svr.servers[0].name }}"
+    state: present
+  register: clcip
+
+- name: debug
+  debug: var=clcip
+
+- name: Add the new server to the inventory
+  add_host: name={{clc_svr.servers[0].name}}  groups=oc_servers ansible_ssh_pass={{ serverpass.stdout }} ansible_ssh_host={{clc_svr.servers[0].ipaddress}} ansible_ssh_user=root ansible_host_key_checking=false

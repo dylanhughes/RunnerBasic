@@ -1,0 +1,46 @@
+---
+- name: Install MySQL
+  apt: package={{ item }} state=installed force=yes update_cache=yes cache_valid_time=3600
+  with_items:
+    - mysql-server
+    - python-mysqldb
+
+- name: Update mysql root password
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: "{{ mysqlpass }}"
+    login_user: root
+    login_password: ""
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
+  with_items:
+    - "{{ inventory_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  ignore_errors: yes
+
+- name: Make the .my.cnf
+  file: path=/root/.my.cnf state=touch mode="0640"
+
+- name: Add content to .my.cnf
+  blockinfile:
+    dest: /root/.my.cnf
+    block: |
+      [client]
+      user=root
+      password="{{ mysqlpass }}"
+      
+- name: Deletes anonymous MySQL server user for host
+  mysql_user: user="" state="absent"
+
+- name: Deletes anonymous MySQL server user for localhost
+  mysql_user: user="" state="absent"
+
+- name: Removes the MySQL test database
+  mysql_db: name=test state=absent
+
+- name: Create an owncloud database
+  mysql_db: name=owncloud state=present
+  notify: Restart MySQL

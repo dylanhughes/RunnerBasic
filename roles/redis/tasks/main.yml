@@ -1,0 +1,48 @@
+---
+- name: Install and Enable Redis
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items:
+    - gcc
+    - libc6-dev
+    - make
+    - curl
+
+- name: Check if install exists
+  stat: path=/etc/redis/6379.conf
+  register: rd
+
+- name: Download the Redis Stable tarball
+  get_url: url=http://download.redis.io/releases/redis-stable.tar.gz dest=/tmp/redis.tar.gz
+  when: not rd.stat.exists
+
+- name: Create directories
+  file: path=/tmp/redis state=directory
+  when: not rd.stat.exists
+
+- name: Extract the Redis tarball
+  shell: tar -xzf /tmp/redis.tar.gz -C /tmp/redis --strip-components=1
+  when: not rd.stat.exists
+
+- name: Make Redis
+  shell: make -C /tmp/redis && make -C /tmp/redis install
+  when: not rd.stat.exists
+
+- name: Run install script
+  shell: echo -n | /tmp/redis/utils/install_server.sh
+  when: not rd.stat.exists
+
+- name: Clean up install files
+  file: path=/tmp/redis state=absent
+
+- name: Set overcommit memory setting
+  # See: http://redis.io/topics/faq
+  sysctl: name=vm.overcommit_memory value=1 state=present
+
+- name: Bind Redis to localhost. Comment out to make available externally.
+  shell: sed -i -e 's/# bind 127.0.0.1/bind 127.0.0.1/g' /etc/redis/6379.conf
+
+- name: Restart redis service
+  service: name=redis_6379 state=restarted

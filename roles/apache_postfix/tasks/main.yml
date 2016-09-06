@@ -1,0 +1,53 @@
+---
+- name: Modify apache config
+  blockinfile:
+    dest: /etc/apache2/apache2.conf
+    insertbefore: ^#<Directory /srv/>
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+           <Directory {{owncloud_path}}>
+             Options Indexes FollowSymLinks
+             AllowOverride None
+             Require all granted
+           </Directory>
+- name: Remove the default www settings
+  blockinfile:
+    dest: /etc/apache2/apache2.conf
+    state: absent
+    content: |
+      <Directory /var/www>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+      </Directory>
+- name: Install apache modules
+  apache2_module:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - rewrite
+    - headers
+    - env
+    - dir
+    - mime
+    - ssl
+
+- name: Enable apache site
+  shell: a2ensite default-ssl
+
+- name: Modify default-ssl.conf
+  blockinfile:
+    dest: /etc/apache2/sites-available/default-ssl.conf
+    insertbefore: </VirtualHost>
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+          <Directory {{owncloud_path}}>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Order allow,deny
+            allow from all
+          </Directory>
+  notify: Restart Apache
+
+- name: Configure postfix
+  lineinfile: dest=/etc/postfix/main.cf state=present line='relayhost = relay.t3mx.com'

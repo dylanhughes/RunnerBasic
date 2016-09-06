@@ -1,0 +1,44 @@
+---
+- name: Make /etc/php5/conf.d
+  file: path=/etc/php5/conf.d state=directory
+
+- name: Copy file to /etc/php5/conf.d/mysql.ini
+  copy: src=files/mysql.ini dest=/etc/php5/conf.d/mysql.ini
+
+- name: Copy file to /etc/apache2/sites-available/owncloud.conf
+  copy: src=files/owncloud.conf dest=/etc/apache2/sites-available/owncloud.conf
+
+- name: Create symbolic link to owncloud.conf
+  file: src=/etc/apache2/sites-available/owncloud.conf dest=/etc/apache2/sites-enabled/owncloud.conf state=link
+
+- name: Creates directories
+  file: path={{owncloud_path}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
+  with_items:
+    - data
+    - assets
+    - updater
+
+- name: Modify file and directory modes one
+  shell: find {{owncloud_path}} -type f -print0 | xargs -0 chmod 0755
+
+- name: Modify file and directory modes two
+  shell: find {{owncloud_path}} -type d -print0 | xargs -0 chmod 0755
+
+- name: Modify permissions on ocpath
+  file: path={{owncloud_path}} state=directory owner=root group={{ htgroup }}
+
+- name: Modify permissions on ocpath subdirs
+  file: path={{owncloud_path}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
+  with_items:
+    - apps
+    - config
+    - themes
+
+- name: Grant executer priviledges
+  shell: chmod +x {{owncloud_path}}/occ
+
+- name: Modify .htaccess permissions one
+  shell: if [ -f {{ owncloud_path }}/.htaccess ]; then chmod 0644 {{ owncloud_path }}/.htaccess; chown root:{{ htgroup }} {{ owncloud_path }}/.htaccess; fi
+
+- name: Modify .htaccess permissions two
+  shell: if [ -f {{ owncloud_path }}/data/.htaccess ]; then chmod 0664 {{ owncloud_path }}/data/.htaccess; chown root:{{ htgroup }} {{ owncloud_path }}/data/.htaccess; fi
