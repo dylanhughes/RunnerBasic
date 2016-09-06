@@ -13,21 +13,21 @@
     dest: /etc/apache2/sites-available/nextcloud.conf
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
-Alias /nextcloud "/{{nc_root}}/{{nc_path}}/{{nc_dest}}"
+      Alias /nextcloud "/{{nc_root}}/{{nc_path}}/{{nc_dest}}"
 
-<Directory /{{nc_root}}/{{nc_path}}/{{nc_dest}}>
-  Options +Indexes +FollowSymlinks +ExecCGI
-  AllowOverride All
-  Require all granted
-  Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
- <IfModule mod_dav.c>
-  Dav off
- </IfModule>
+      <Directory /{{nc_root}}/{{nc_path}}/{{nc_dest}}>
+       Options +Indexes +FollowSymlinks +ExecCGI
+       AllowOverride All
+       Require all granted
+       Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
+      <IfModule mod_dav.c>
+       Dav off
+      </IfModule>
 
- SetEnv HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
- SetEnv HTTP_HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
+       SetEnv HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
+       SetEnv HTTP_HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
 
-</Directory>
+      </Directory>
 
 - name: Create symbolic link to nextcloud.conf
   file: src=/etc/apache2/sites-available/nextcloud.conf dest=/etc/apache2/sites-enabled/nextcloud.conf state=link
