@@ -12,7 +12,7 @@ The root, path and dest variables are designed to make up the path, like if you'
 * ht_group # ex: www-data
 * mysqlpass # ex: "abc123!@#"
 
-### DESCRIPTION:
+### Description
 This playbook is designed to be called by Runner and will provision an Ubuntu 14.04 server in CenturyLink Cloud and deploys a working instance of nextcloud to it.
 The high level tasks are as follows:
 * provision a group and server
@@ -21,15 +21,15 @@ The high level tasks are as follows:
 * make some directory structures, set some permissions & ownership and copy some config files to the server
 * configure apache and postfix
 
-### NOTES:
+### Notes
 Once the play is successful, hit the private IP at http://aa.bb.cc.dd/nextcloud
 
 Because nextcloud is a sort of private dropbox it's probable that a disk (partition) will need to be added to the instance to serve as storage, to do this I would move /data_nc to a temporary location, add a 'partition' mounted to /data_nc then move the contents of the original /data_nc into your new partition.
 
-### PREREQUISITES
+### Prerequisites
 You must have a CenturyLink Cloud account to be able to use Runner
 
-### ADDITIONAL STEPS
+### Additional Steps
 Once the Server has been configured there are some steps that need to be completed.  When you log into the http address previously mentioned it will ask for an initial login and going through that login process generates the hashed passwords and such like in the config.php file below.
 
 Once that is done, change the http in that config.php file to become https and it should redirect you.
@@ -76,3 +76,7 @@ $CONFIG = array (
   'loglevel' => 2,
 );
 ```
+### Errors
+```Your data directory and your files are probably accessible from the Internet. The .htaccess file is not working. We strongly suggest that you configure your web server in a way that the data directory is no longer accessible or you move the data directory outside the web server document root.
+```
+An easy fix for this error is to move your data directory up 1 level and edit the line in your config.php, i.e. `  'datadirectory' => '/data_oc/www/nextcloud/data',` would become `  'datadirectory' => '/data_oc/www/data',`, the move command would be `# mv /data_oc/www/nextcloud/data /data_oc/www/
