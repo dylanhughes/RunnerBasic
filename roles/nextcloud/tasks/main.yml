@@ -1,8 +1,8 @@
 ---
-- name: Create directories
+- name: Create directories one
   file: path=/{{nc_root}} state=directory mode=0755
 
-- name: Create directories
+- name: Create directories two
   file: path=/{{nc_root}}/{{nc_path}} state=directory mode=0755
 
 - name: Download nextcloud tarball
@@ -22,11 +22,8 @@
   shell: cp -r /{{nc_root}}/nextcloud /{{nc_root}}/{{nc_path}}/
   when: not st.stat.exists
 
-- name: Remove Documents default user folder
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/core/skeleton/Documents state=absent
-
-- name: Remove Photos default user folder
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/core/skeleton/Photos state=absent
-
-- name: Remove install directory
+- name: Remove nextcloud install directory
   file: path=/{{nc_root}}/nextcloud state=absent
+
+- name: Create blank folder for an alternate skeleton (without causing errors)
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/core/skelempty

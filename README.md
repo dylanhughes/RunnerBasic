@@ -35,6 +35,8 @@ Once the Server has been configured there are some steps that need to be complet
 Once that is done, change the http in that config.php file to become https and it should redirect you.
 You can also add the public IP here to the 'array' section and I've also added some sample email config that works in CenturyLink Cloud.
 
+If you don't want new users to have the Documents and Photos folders in their accounts by default change, the config.php line below so that `'skeletondirectory'` points at `=> '/data_oc/www/nextcloud/core/skelempty',` 
+
 ### EXAMPLE config.php
 ```
 <?php
@@ -58,6 +60,7 @@ $CONFIG = array (
   'dbpassword' => 'BPBPUKXrJ51+AUvT4fUrMPW+FTvBPh',
   'logtimezone' => 'UTC',
   'installed' => true,
+  'skeletondirectory' => '/data_oc/www/nextcloud/core/skeleton',
   'mail_smtpmode' => 'sendmail',
   'mail_from_address' => 'admin',
   'mail_smtphost' => 'relay@t3mx.com',
@@ -80,4 +83,4 @@ $CONFIG = array (
 ```
 Your data directory and your files are probably accessible from the Internet. The .htaccess file is not working. We strongly suggest that you configure your web server in a way that the data directory is no longer accessible or you move the data directory outside the web server document root.
 ```
-An easy fix for this error is to move your data directory up 1 level and edit the line in your config.php, i.e. `  'datadirectory' => '/data_oc/www/nextcloud/data',` would become `  'datadirectory' => '/data_oc/www/data',`, the move command would be `# mv /data_oc/www/nextcloud/data /data_oc/www/
+An easy fix for this error is to move your data directory up 1 level and edit the line in your config.php, i.e. `  'datadirectory' => '/data_oc/www/nextcloud/data',` would become `  'datadirectory' => '/data_oc/www/data',`, the move command would be `# mv /data_oc/www/nextcloud/data /data_oc/www/`
