@@ -26,4 +26,4 @@
   file: path=/{{nc_root}}/nextcloud state=absent
 
 - name: Create blank folder for an alternate skeleton (without causing errors)
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/core/skelempty
+  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/core/skelempty state=directory mode=0755
