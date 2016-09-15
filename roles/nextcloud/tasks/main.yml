@@ -3,27 +3,27 @@
   file: path=/{{nc_root}} state=directory mode=0755
 
 - name: Create directories two
-  file: path=/{{nc_root}}/{{nc_path}} state=directory mode=0755
+  file: path=/{{nc_root}}/www state=directory mode=0755
 
 - name: Download nextcloud tarball
-  get_url: url=https://download.nextcloud.com/server/releases/nextcloud-{{nc_ver}}.tar.bz2 dest=/{{nc_root}}/nextcloud-{{nc_ver}}.tar.bz2 validate_certs=no
+  get_url: url=https://download.nextcloud.com/server/releases/nextcloud-10.0.0.tar.bz2 dest=/{{nc_root}}/nextcloud-10.0.0.tar.bz2 validate_certs=no
 
 - name: Run only if it hasn't been done already
-  stat: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}
+  stat: path=/{{nc_root}}/www/nextcloud
   register: st
 
 - name: Extract the Tarball
-  shell: tar -xjf nextcloud-{{nc_ver}}.tar.bz2
+  shell: tar -xjf nextcloud-10.0.0.tar.bz2
   args:
     chdir: "/{{nc_root}}"
   when: not st.stat.exists
 
 - name: Copy data to wwwroot
-  shell: cp -r /{{nc_root}}/nextcloud /{{nc_root}}/{{nc_path}}/
+  shell: cp -r /{{nc_root}}/nextcloud /{{nc_root}}/www/
   when: not st.stat.exists
 
 - name: Remove nextcloud install directory
   file: path=/{{nc_root}}/nextcloud state=absent
 
 - name: Create blank folder for an alternate skeleton (without causing errors)
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/core/skelempty state=directory mode=0755
+  file: path=/{{nc_root}}/www/nextcloud/core/skelempty state=directory mode=0755

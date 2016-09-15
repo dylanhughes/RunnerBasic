@@ -1,9 +1,2 @@
 ---
-dc: "{{ datacenter }}"
 nc_root: "{{ nextcloud_root }}"
-nc_path: "{{ nextcloud_path }}"
-nc_dest: "{{ nextcloud_dest }}"
-nc_ver: "{{ nextcloud_version }}"
-htuser: "{{ ht_user }}"
-htgroup: "{{ ht_group }}"
-mysql_pass: "{{ mysqlpass }}"

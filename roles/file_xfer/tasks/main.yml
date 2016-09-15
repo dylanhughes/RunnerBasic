@@ -13,9 +13,9 @@
     dest: /etc/apache2/sites-available/nextcloud.conf
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
-      Alias /nextcloud "/{{nc_root}}/{{nc_path}}/{{nc_dest}}"
+      Alias /nextcloud "/{{nc_root}}/www/nextcloud"
 
-      <Directory /{{nc_root}}/{{nc_path}}/{{nc_dest}}>
+      <Directory /{{nc_root}}/www/nextcloud>
        Options +Indexes +FollowSymlinks +ExecCGI
        AllowOverride All
        Require all granted
@@ -24,8 +24,8 @@
        Dav off
       </IfModule>
 
-       SetEnv HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
-       SetEnv HTTP_HOME /{{nc_root}}/{{nc_path}}/{{nc_dest}}
+       SetEnv HOME /{{nc_root}}/www/nextcloud
+       SetEnv HTTP_HOME /{{nc_root}}/www/nextcloud
 
       </Directory>
 
@@ -33,38 +33,38 @@
   file: src=/etc/apache2/sites-available/nextcloud.conf dest=/etc/apache2/sites-enabled/nextcloud.conf state=link
 
 - name: Creates directories
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
+  file: path=/{{nc_root}}/www/nextcloud/{{ item }} state=directory owner=www-data group=www-data
   with_items:
     - data
     - assets
     - updater
 
 - name: Modify file and directory modes one
-  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type f -print0 | xargs -0 chmod 0755
+  shell: find /{{nc_root}}/www/nextcloud/ -type f -print0 | xargs -0 chmod 0755
   ignore_errors: yes
 
 - name: Modify file and directory modes two
-  shell: find /{{nc_root}}/{{nc_path}}/{{nc_dest}}/ -type d -print0 | xargs -0 chmod 0755
+  shell: find /{{nc_root}}/www/nextcloud/ -type d -print0 | xargs -0 chmod 0755
   ignore_errors: yes
 
 - name: Modify permissions on nc_dest
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}} state=directory owner=root group={{ htgroup }}
+  file: path=/{{nc_root}}/www/nextcloud state=directory owner=root group=www-data
 
 - name: Modify permissions on nc_dest subdirs
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/{{ item }} state=directory owner={{ htuser }} group={{ htgroup }}
+  file: path=/{{nc_root}}/www/nextcloud/{{ item }} state=directory owner=www-data group=www-data
   with_items:
     - apps
     - config
     - themes
 
 - name: Grant executer priviledges
-  shell: chmod +x /{{nc_root}}/{{nc_path}}/{{nc_dest}}/occ
+  shell: chmod +x /{{nc_root}}/www/nextcloud/occ
 
 - name: Modify .htaccess permissions one
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/.htaccess state=touch mode=0644
+  file: path=/{{nc_root}}/www/nextcloud/.htaccess state=touch mode=0644
 
 - name: Modify .htaccess permissions two
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/data/.htaccess state=touch mode=0664
+  file: path=/{{nc_root}}/www/nextcloud/data/.htaccess state=touch mode=0664
 
 - name: Modify .user.ini permissions to allow file size limit to be changed
-  file: path=/{{nc_root}}/{{nc_path}}/{{nc_dest}}/.user.ini state=touch owner=root group={{ htgroup }} mode=0775
+  file: path=/{{nc_root}}/www/nextcloud/.user.ini state=touch owner=root group=www-data mode=0775

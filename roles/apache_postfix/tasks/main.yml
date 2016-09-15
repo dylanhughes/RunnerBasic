@@ -5,7 +5,7 @@
     insertbefore: ^#<Directory /srv/>
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
-           <Directory /{{nc_root}}/{{nc_path}}/{{nc_dest}}>
+           <Directory /{{nc_root}}/www/nextcloud>
              Options Indexes FollowSymLinks
              AllowOverride None
              Require all granted
@@ -43,7 +43,7 @@
     insertbefore: </VirtualHost>
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
-          <Directory /{{nc_root}}/{{nc_path}}/{{nc_dest}}>
+          <Directory /{{nc_root}}/www/nextcloud>
             Options Indexes FollowSymLinks
             AllowOverride All
             Order allow,deny

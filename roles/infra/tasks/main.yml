@@ -27,6 +27,7 @@
     password: "{{ serverpass.stdout }}"
     cpu: 4
     memory: 8
+    additional_disks: "{{ additional_disks }}"
   register: clc_svr
 
 
