@@ -15,7 +15,7 @@
   register: serverpass
   changed_when: false
 
-vars:
+- vars:
   additional_disks: [{path: /"{{ nc_root }}", sizeGB: 10, type: partitioned}]
 
 - name: create a single server
