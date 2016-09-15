@@ -16,7 +16,7 @@
   changed_when: false
 
 - vars:
-  additional_disks: "[{path: /{{nc_root}}, sizeGB: 10, type: partitioned}]"
+  adddisks: "[{path: /{{nc_root}}, sizeGB: 10, type: partitioned}]"
 
 - name: create a single server
   clc_server:
@@ -29,7 +29,7 @@
     password: "{{ serverpass.stdout }}"
     cpu: 4
     memory: 8
-    additional_disks: "{{ additional_disks }}"
+    additional_disks: "{{ adddisks }}"
   register: clc_svr
 
 
