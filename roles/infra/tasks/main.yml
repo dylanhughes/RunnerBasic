@@ -29,7 +29,6 @@
     additional_disks: "{{ adddisks }}"
   register: clc_svr
 
-
 - debug: var=clc_svr
 
 - name: Wait for SSH to Come up on Server
