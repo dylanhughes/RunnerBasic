@@ -16,7 +16,7 @@
   changed_when: false
 
 - vars:
-  adddisks: "[{path: /data_nc, sizeGB: 10, type: partitioned}]"
+  adddisks: [{path: /data_nc, sizeGB: 10, type: partitioned}]
 
 - name: create a single server
   clc_server:
