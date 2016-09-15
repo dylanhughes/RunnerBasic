@@ -1,4 +1,4 @@
 ---
 dc: "{{ datacenter }}"
 nc_root: "{{ nextcloud_root }}"
-adddisks: [{path: /{{nextcloud_root}}, sizeGB: 10, type: partitioned}]
+adddisks: "[{path: /{{nextcloud_root}}, sizeGB: 10, type: partitioned}]"
