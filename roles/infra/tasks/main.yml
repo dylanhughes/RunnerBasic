@@ -1,7 +1,7 @@
 ---
 - name: create nextcloud Group
   clc_group:
-    location: "{{ datacenter }}"
+    location: "{{ dc }}"
     name: nextcloud
     state: present
   register: clc_grp
@@ -23,7 +23,7 @@
     count: 1
     count_group: nextcloud
     group: nextcloud
-    location: "{{ datacenter }}"
+    location: "{{ dc }}"
     password: "{{ serverpass.stdout }}"
     cpu: 4
     memory: 8
