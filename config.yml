@@ -27,5 +27,14 @@ fields:
     type: textblock
     required: true
 
+  # Disk addition field
+  - name: nextcloud_disk
+    displayName: Size of addional Partition to install Nextcloud on
+    type: number
+    helpText: Partition Size GB
+    required: true
+    min: 1
+    max: 1024
+
 tags:
   - cloud
