@@ -26,7 +26,7 @@
     password: "{{ serverpass.stdout }}"
     cpu: 4
     memory: 8
-    additional_disks: "{{ adddisks }}"
+    additional_disks: "{{ additional_disks }}"
   register: clc_svr
 
 - debug: var=clc_svr

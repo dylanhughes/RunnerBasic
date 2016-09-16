@@ -15,10 +15,16 @@ fields:
     type: datacenters
     required: true
 
-  # Sample password field
+  # MySQL password field
   - name: mysqlpass
     displayName: MySQL Password
     type: password
+    required: true
+
+  # Root folder field
+  - name: nextcloud_root
+    displayName: Root Installation folder
+    type: textblock
     required: true
 
 tags:

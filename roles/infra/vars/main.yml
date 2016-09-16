@@ -1,4 +1,5 @@
 ---
 dc: "{{ datacenter }}"
 nc_root: "{{ nextcloud_root }}"
-adddisks: [{path: /data_nc, sizeGB: 10, type: partitioned}]
+nc_size: "{{ nextcloud_disk }}"
+additional_disks: [{path: "{{ nc_root }}", sizeGB: "{{ nc_size }}", type: partitioned}]
