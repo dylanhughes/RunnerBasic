@@ -24,8 +24,9 @@ fields:
   # Root folder field
   - name: nextcloud_root
     displayName: Root Installation folder
-    type: textblock
+    type: text
     required: true
+    helpText: Do not include the first or last "/" in this path. Example data_nc
 
   # Disk addition field
   - name: nextcloud_disk
