@@ -5,6 +5,9 @@ imagePath: https://nextcloud.com/wp-content/themes/next/assets/img/common/nextcl
 version: 0.0.1
 updateDate: Sept 6th, 2016
 public: false
+author: Simon Walker
+organization: CenturyLink Cloud
+organizationUrl: https://ctl.io
 
 # Allow for single panel fact collection.
 fields:
