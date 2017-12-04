@@ -1,8 +1,8 @@
 ---
-- name: create nextcloud Group
+- name: create Runner Group
   clc_group:
     location: "{{ dc }}"
-    name: nextcloud
+    name: Runner
     state: present
   register: clc_grp
 
@@ -17,16 +17,15 @@
 
 - name: create a single server
   clc_server:
-    name: ncld
+    name: web
     template: ubuntu-14-64
     count: 1
-    count_group: nextcloud
-    group: nextcloud
+    count_group: runnertest
+    group: runnertest
     location: "{{ dc }}"
     password: "{{ serverpass.stdout }}"
-    cpu: 4
-    memory: 8
-    additional_disks: "{{ additional_disks }}"
+    cpu: 1
+    memory: 1
   register: clc_svr
 
 - debug: var=clc_svr
