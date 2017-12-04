@@ -16,14 +16,6 @@
       tags:
         - db
 
-- name: Get additional packages
-  hosts: nc_servers
-  gather_facts: True
-  roles:
-    - role: packages
-      tags:
-        - pkg
-
 - name: Copy mysql.ini file over
   hosts: nc_servers
   gather_facts: False
@@ -40,10 +32,3 @@
       tags:
         - appost
 
-- name: Install and Enable Redis PHP module
-  hosts: nc_servers
-  gather_facts: False
-  roles:
-    - role: redis
-      tags:
-        - redistag
