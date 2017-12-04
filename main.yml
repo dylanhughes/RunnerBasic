@@ -24,15 +24,7 @@
       tags:
         - pkg
 
-- name: Install nextcloud
-  hosts: nc_servers
-  gather_facts: False
-  roles:
-    - role: nextcloud
-      tags:
-        - nextcloud
-
-- name: Copy mysql.ini and nextcloud.conf files over
+- name: Copy mysql.ini file over
   hosts: nc_servers
   gather_facts: False
   roles:
