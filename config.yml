@@ -1,13 +1,5 @@
-name: nextcloud Product
-description: Access & share your files, calendars, contacts, mail & more from any device, on your terms
-shortDescription: nextcloud is your own personal cloud
-imagePath: https://nextcloud.com/wp-content/themes/next/assets/img/common/nextcloud-square-logo.png?4cb134
-version: 0.0.1
-updateDate: Sept 6th, 2016
-public: false
-author: Simon Walker
-organization: CenturyLink Cloud
-organizationUrl: https://ctl.io
+name: Build out MySQL server and Apache Server
+description: Build out MySQL server and Apache Server
 
 # Allow for single panel fact collection.
 fields:
@@ -23,22 +15,6 @@ fields:
     displayName: MySQL Password
     type: password
     required: true
-
-  # Root folder field
-  - name: nextcloud_root
-    displayName: Root Installation folder
-    type: text
-    required: true
-    helpText: Do not include the first or last "/" in this path. Example data_nc
-
-  # Disk addition field
-  - name: nextcloud_disk
-    displayName: Size of addional Partition to install Nextcloud on
-    type: number
-    helpText: Partition Size GB
-    required: true
-    min: 1
-    max: 1024
 
 tags:
   - cloud
